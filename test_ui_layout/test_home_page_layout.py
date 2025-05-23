@@ -14,7 +14,6 @@ def test_about_us_section_verbiage(login_set_up)-> None:
     expect(home_page.celebrate_body).to_be_visible()
 
 
-
     print("About the section verbiage")
 
 
