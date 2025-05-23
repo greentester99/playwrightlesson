@@ -58,7 +58,6 @@ def login_set_up(set_up):
     yield page
 
 
-
 @pytest.fixture
 def go_to_new_collection(page):
     # browser = playwright.chromium.launch(headless=False,) #slow_mo=500#
