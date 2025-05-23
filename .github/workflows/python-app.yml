@@ -37,4 +37,4 @@ jobs:
         PASSWORD: ${{ secrets.PASSWORD }}
         PYTHON: ${{ github.workspace }}
       run: |
-        pytest
+        pytest --maxfail=5 --disable-warnings -v
