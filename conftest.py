@@ -39,7 +39,6 @@ def login_set_up(set_up):
 
     page = set_up
 
-
     # page.wait_for_load_state('networkidle')
     page.get_by_test_id("handle-button").click()
     # page.click("text=Log In")
