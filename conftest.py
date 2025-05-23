@@ -1,28 +1,72 @@
+import os
+
+
 import pytest
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import  expect
+
+
+PASSWORD =["PASSWORD"]
+
+# try:
+#     PASSWORD =os.environ["PASSWORD"]
+# except KeyError:
+#     import utils.secret_config
+#
+#     PASSWORD = utils.secret_config.PASSWORD
+
 
 @pytest.fixture(scope="session")
-def set_up():
-    with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=False, slow_mo=500)  # Visual debugging
-        context = browser.new_context()
-        page = context.new_page()
-        page.goto("https://symonstorozhenko.wixsite.com/website-1")
-        page.set_default_timeout(5000)
-        page.wait_for_load_state("networkidle")  # Ensures page and scripts fully load
-        yield page
-        context.close()
-        browser.close()
+def set_up(browser):
+    # browser = playwright.chromium.launch(headless=False,) #slow_mo=500#
+    context = browser.new_context()
+    page = context.new_page()
+    page.goto("https://symonstorozhenko.wixsite.com/website-1")
+    page.set_default_timeout(3000)
+
+
+
+    yield page
+    page.close()
+
 
 @pytest.fixture(scope="session")
 def login_set_up(set_up):
+    # browser = playwright.chromium.launch(headless=False,) #slow_mo=500#
+    # context = browser.new_context()
+    # page = context.new_page()
+    # page.goto("")
+    # page.set_default_timeout(3000)
+
     page = set_up
 
-    # Click initial handle button
+
+    # page.wait_for_load_state('networkidle')
     page.get_by_test_id("handle-button").click()
-
-    # Wait for and click the sign-up switch button
-    page.get_by_test_id("signUp.switchToSignUp").wait_for(state="visible", timeout=5000)
+    # page.click("text=Log In")
     page.get_by_test_id("signUp.switchToSignUp").click()
+    page.click("'Log in with Email' ")
+    page.get_by_test_id("emailAuth").get_by_role("textbox", name="Email").fill("symon.storozhenko@gmail.com")
+    page.get_by_test_id("emailAuth").get_by_role("textbox", name="Email").press("Tab")
+    # page.get_by_role("textbox", name="Password").fill(utils.secret_config.PASSWORD )
+    page.get_by_role("textbox", name="Password").fill(PASSWORD )
 
-    return page
+    page.get_by_role("textbox", name="Password").press("Enter")
+    expect(page.get_by_role("button", name="Log in with Email")).to_be_hidden()
+    expect(page.locator("text=Fashion You’ll Love")).to_be_visible()
+    print('yayi')
+
+
+    yield page
+
+
+@pytest.fixture
+def go_to_new_collection(page):
+    # browser = playwright.chromium.launch(headless=False,) #slow_mo=500#
+    # context = browser.new_context()
+    # page = context.new_page()
+    page.goto("/new-collection")
+    page.set_default_timeout(3000)
+
+
+
+    yield page
