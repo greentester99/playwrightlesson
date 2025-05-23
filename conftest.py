@@ -1,8 +1,15 @@
 import os
 
 from playwright.sync_api import Playwright, sync_playwright, expect
-from pom.home_page_elements import HomePageElements
+# from pom.home_page_elements import HomePageElements
 import pytest
+
+try:
+    PASSWORD =os.environ["PASSWORD"]
+except KeyError:
+    import utils.secret_config
+
+    PASSWORD = utils.secret_config.PASSWORD
 
 
 @pytest.fixture(scope="session")
@@ -38,7 +45,7 @@ def login_set_up(set_up):
     page.get_by_test_id("emailAuth").get_by_role("textbox", name="Email").fill("symon.storozhenko@gmail.com")
     page.get_by_test_id("emailAuth").get_by_role("textbox", name="Email").press("Tab")
     # page.get_by_role("textbox", name="Password").fill(utils.secret_config.PASSWORD )
-    page.get_by_role("textbox", name="Password").fill(os.environ["PASSWORD"] )
+    page.get_by_role("textbox", name="Password").fill(PASSWORD )
 
     page.get_by_role("textbox", name="Password").press("Enter")
     expect(page.get_by_role("button", name="Log in with Email")).to_be_hidden()
