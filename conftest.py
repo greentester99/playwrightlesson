@@ -15,11 +15,11 @@ PASSWORD =["PASSWORD"]
 #     PASSWORD = utils.secret_config.PASSWORD
 
 
-@pytest.fixture(scope="session")
-def set_up(browser):
+@pytest.fixture()
+def set_up(page):
     # browser = playwright.chromium.launch(headless=False,) #slow_mo=500#
-    context = browser.new_context()
-    page = context.new_page()
+    # context = browser.new_context()
+    # page = context.new_page()
     page.goto("https://symonstorozhenko.wixsite.com/website-1")
     page.set_default_timeout(3000)
 
@@ -29,7 +29,7 @@ def set_up(browser):
     page.close()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def login_set_up(set_up):
     # browser = playwright.chromium.launch(headless=False,) #slow_mo=500#
     # context = browser.new_context()
