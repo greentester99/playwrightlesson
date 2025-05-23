@@ -17,8 +17,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    env:
-      PASSWORD: ${{ secrets.PASSWORD }}
+
 
     steps:
     - uses: actions/checkout@v4
@@ -43,6 +42,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
 
-
+      env:
+       PASSWORD: ${{ secrets.PASSWORD }}
       run: |
-        pytest -v --tb=short
+        pytest
