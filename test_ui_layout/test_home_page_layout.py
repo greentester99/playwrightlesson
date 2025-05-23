@@ -26,7 +26,7 @@ def test_about_us_section_verbiage_2(login_set_up)->None:
     # page.goto("https://symonstorozhenko.wixsite.com/website-1")
     # page.set_default_timeout(2000)
     home_page = HomePageElements(page)
-    # expect(page.locator("text=yooo")).to_be_visible()
+    expect(page.locator("text=yooo")).not_to_be_visible()
     expect(home_page.celebrate_header).to_be_visible()
     expect(home_page.celebrate_body).to_be_visible()
 
