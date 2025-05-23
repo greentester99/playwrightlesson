@@ -2,16 +2,17 @@ import os
 import pytest
 from playwright.sync_api import expect
 
+print("⚙️ Loading conftest.py...")
 
 @pytest.fixture(scope="session")
 def get_password():
     """
     Securely retrieves the PASSWORD environment variable.
-    Raises an error only when the password is actually needed.
     """
+    print("🔐 Checking PASSWORD environment variable...")
     password = os.getenv("PASSWORD")
     if not password:
-        raise EnvironmentError("PASSWORD environment variable is not set.")
+        raise EnvironmentError("❌ PASSWORD environment variable is not set.")
     return password
 
 
@@ -20,6 +21,7 @@ def set_up(browser):
     """
     Launches the site and returns the page object.
     """
+    print("🌐 Setting up browser context...")
     context = browser.new_context()
     page = context.new_page()
     page.goto("https://symonstorozhenko.wixsite.com/website-1")
@@ -34,6 +36,7 @@ def login_set_up(set_up, get_password):
     """
     Logs in using the provided credentials and returns an authenticated page.
     """
+    print("🔑 Setting up login...")
     page = set_up
     password = get_password
 
@@ -48,19 +51,7 @@ def login_set_up(set_up, get_password):
     page.get_by_role("textbox", name="Password").fill(password)
     page.get_by_role("textbox", name="Password").press("Enter")
 
-    # Wait for successful login
     expect(page.get_by_role("button", name="Log in with Email")).to_be_hidden()
     expect(page.locator("text=Fashion You’ll Love")).to_be_visible()
 
-    yield page
-
-
-@pytest.fixture
-def go_to_new_collection(set_up):
-    """
-    Navigates to the new-collection page.
-    """
-    page = set_up
-    page.goto("/new-collection")
-    page.set_default_timeout(3000)
     yield page
