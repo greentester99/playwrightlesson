@@ -1,6 +1,4 @@
 import os
-
-from playwright.sync_api import  expect
 import pytest
 
 PASSWORD =os.environ["PASSWORD"]
