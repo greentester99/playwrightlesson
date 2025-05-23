@@ -55,3 +55,4 @@ def login_set_up(set_up, get_password):
     expect(page.locator("text=Fashion You’ll Love")).to_be_visible()
 
     yield page
+
