@@ -45,4 +45,4 @@ jobs:
       env:
        PASSWORD: ${{ secrets.PASSWORD }}
       run: |
-        pytest
+        pytest -v --tb=long
